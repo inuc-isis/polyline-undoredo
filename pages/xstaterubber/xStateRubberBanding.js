@@ -12,9 +12,12 @@ const stage = new Konva.Stage({
   height: 400,
 });
 
-// Une couche de dessin, il peut y en avoir plusieurs
-const layer = new Konva.Layer();
-stage.add(layer);
+// Une couche pour le dessin
+const dessin = new Konva.Layer();
+// Une couche pour la polyline en cours de construction
+const temporaire = new Konva.Layer();
+stage.add(dessin);
+stage.add(temporaire);
 
 // La ligne en cours de dessin
 let rubber;
@@ -57,17 +60,19 @@ const rubberBandingMachine = createMachine(
           stroke: "red",
           strokeWidth: 2,
         });
-        layer.add(rubber);
+        temporaire.add(rubber);
       },
       // Modifie le dernier point de la ligne en cours de dessin
       setLastPoint: (context, event) => {
         const pos = stage.getPointerPosition();
         rubber.points([rubber.points()[0], rubber.points()[1], pos.x, pos.y]);
-        layer.batchDraw();
+        temporaire.batchDraw();
       },
       // Sauvegarde la ligne
       saveLine: (context, event) => {
-        // Save the line somewhere
+        rubber.remove(); // On l'enlève de la couche temporaire
+        rubber.stroke("black"); // On change la couleur
+        dessin.add(rubber); // On l'ajoute à la ouche dessin   
       },
     },
   }
