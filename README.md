@@ -15,3 +15,5 @@ Suivez ces étapes pour configurer le projet :
 ## Exécution du Projet
 
 Après avoir installé les dépendances, vous pouvez démarrer le projet en exécutant : `npm run dev`
+# polyline-undoredo
+polyline en statechart + pattern undo redo
